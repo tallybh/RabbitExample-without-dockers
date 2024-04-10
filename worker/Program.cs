@@ -9,7 +9,7 @@ var factory = new ConnectionFactory
 var connection = factory.CreateConnection();
 using
 var channel = connection.CreateModel();
-channel.QueueDeclare("product", exclusive: false);
+channel.QueueDeclare("message", exclusive: false);
 
 var consumer = new EventingBasicConsumer(channel);
 consumer.Received += (model, ea) =>
@@ -18,7 +18,7 @@ consumer.Received += (model, ea) =>
     var message = Encoding.UTF8.GetString(body);
     Console.WriteLine($" [x] Received {message}");
 };
-channel.BasicConsume(queue: "product",
+channel.BasicConsume(queue: "message",
                      autoAck: true,
                      consumer: consumer);
 
