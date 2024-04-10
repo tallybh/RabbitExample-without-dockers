@@ -12,16 +12,16 @@ var factory = new ConnectionFactory
 var connection = factory.CreateConnection();
 using
 var channel = connection.CreateModel();
-channel.QueueDeclare("message", exclusive: false);
+channel.QueueDeclare("log", exclusive: false);
 
 var consumer = new EventingBasicConsumer(channel);
 consumer.Received += (model, ea) =>
 {
     var body = ea.Body.ToArray();
     var message = Encoding.UTF8.GetString(body);
-    Console.WriteLine($" [x] Received {message}");
+    Console.WriteLine($" [x] logger Received {message}");
 };
-channel.BasicConsume(queue: "message",
+channel.BasicConsume(queue: "log",
                      autoAck: true,
                      consumer: consumer);
 

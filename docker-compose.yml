@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  rabbitexample:
+    image: ${DOCKER_REGISTRY-}rabbitexample
+    build:
+      context: .
+      dockerfile: RabbitExample/Dockerfile
+
+  logworker:
+    image: ${DOCKER_REGISTRY-}logworker
+    build:
+      context: .
+      dockerfile: Logworker/Dockerfile
+    depends_on:
+     - "rabbitexample"
+     - "rabbitmq"
+
+
+
+  worker:
+    image: ${DOCKER_REGISTRY-}worker
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    depends_on:
+        - "rabbitexample"
+        - "rabbitmq"
+
+  rabbitmq: # login guest:guest
+    image: rabbitmq:3-management
+    hostname: "rabbitmq"
+    labels:
+      NAME: "rabbitmq"
+    ports:
+    - "4369:4369"
+    - "5671:5671"
+    - "5672:5672"
+    - "25672:25672"
+    - "15671:15671"
+    - "15672:15672"
+
+

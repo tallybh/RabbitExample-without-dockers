@@ -24,6 +24,7 @@ namespace RabbitExample.Controllers
         public IEnumerable<WeatherForecast> Get()
         {
             _rabbitProducer.SendProductMessage<string>("From controller");
+            _rabbitProducer.SendLogMessage<string>("Logging");
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
